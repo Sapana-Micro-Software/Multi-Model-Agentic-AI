@@ -6,6 +6,7 @@
 \documentclass[aspectratio=169]{beamer}
 \usetheme{Madrid}
 \usecolortheme{default}
+\usepackage{tikz}
 
 \title{Multi-Model Agentic AI System}
 \subtitle{A Comprehensive, Fault-Tolerant, Distributed Multi-Agent Architecture}
@@ -140,19 +141,20 @@
 \end{frame}
 
 \begin{frame}{Circuit Breaker State Machine}
-\begin{figure}
-\centering
-\begin{tikzpicture}[node distance=2cm]
-\node[state] (closed) {CLOSED};
-\node[state, right of=closed] (open) {OPEN};
-\node[state, below of=closed] (half) {HALF\_OPEN};
-\draw[->] (closed) edge node[above] {Failures $\geq$ threshold} (open);
-\draw[->] (open) edge node[right] {Timeout} (half);
-\draw[->] (half) edge node[left] {Success} (closed);
-\draw[->] (half) edge node[below] {Failure} (open);
-\end{tikzpicture}
-\caption{Circuit breaker state transitions}
-\end{figure}
+\begin{center}
+\textbf{States:} CLOSED $\rightarrow$ OPEN $\rightarrow$ HALF\_OPEN
+
+\vspace{0.5cm}
+\begin{itemize}
+    \item \textbf{CLOSED}: Normal operation
+    \item \textbf{OPEN}: Failures exceed threshold
+    \item \textbf{HALF\_OPEN}: Testing recovery after timeout
+    \item Transitions: CLOSED $\xrightarrow{\text{Failures} \geq \text{threshold}}$ OPEN
+    \item OPEN $\xrightarrow{\text{Timeout}}$ HALF\_OPEN
+    \item HALF\_OPEN $\xrightarrow{\text{Success}}$ CLOSED
+    \item HALF\_OPEN $\xrightarrow{\text{Failure}}$ OPEN
+\end{itemize}
+\end{center}
 \end{frame}
 
 \section{Distributed System}
