@@ -81,7 +81,7 @@ jobs:
 
       - name: Deploy to gh-pages
         run: |
-          # Store watermarked PDFs before checkout
+          # Store watermarked PDFs before checkout (stash any uncommitted changes)
           mkdir -p /tmp/watermarked_pdfs
           cp doc/paper_preprint.pdf /tmp/watermarked_pdfs/ 2>/dev/null || echo "Paper PDF not in doc/"
           cp doc/presentation_preprint.pdf /tmp/watermarked_pdfs/ 2>/dev/null || echo "Presentation PDF not in doc/"
@@ -91,8 +91,14 @@ jobs:
           echo "PDFs available before checkout:"
           ls -lh /tmp/watermarked_pdfs/*.pdf 2>/dev/null || echo "No PDFs in temp storage"
           
+          # Stash any uncommitted changes to allow checkout
+          git stash push -m "Stash PDFs before checkout" || echo "No changes to stash"
+          
+          # Fetch and checkout gh-pages branch
           git fetch origin gh-pages:gh-pages || true
           git checkout gh-pages || git checkout -b gh-pages
+          
+          # Remove all existing files
           git rm -rf . --ignore-unmatch || true
           
           # Copy all docs content (this includes docs/doc/ with PDFs)
@@ -102,15 +108,19 @@ jobs:
           # Ensure doc/ folder exists and has PDFs
           mkdir -p doc
           
-          # Copy PDFs from temp storage if they exist
+          # Copy PDFs from temp storage (highest priority)
           if [ -f /tmp/watermarked_pdfs/paper_preprint.pdf ]; then
             cp /tmp/watermarked_pdfs/paper_preprint.pdf doc/paper_preprint.pdf
             echo "✅ Copied paper PDF from temp storage to doc/"
+          elif [ -f doc/paper_preprint.pdf ]; then
+            echo "✅ Paper PDF already in doc/ from docs copy"
           fi
           
           if [ -f /tmp/watermarked_pdfs/presentation_preprint.pdf ]; then
             cp /tmp/watermarked_pdfs/presentation_preprint.pdf doc/presentation_preprint.pdf
             echo "✅ Copied presentation PDF from temp storage to doc/"
+          elif [ -f doc/presentation_preprint.pdf ]; then
+            echo "✅ Presentation PDF already in doc/ from docs copy"
           fi
           
           # Verify PDFs are present
