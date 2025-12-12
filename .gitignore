@@ -37,3 +37,6 @@ CMakeFiles/
 cmake_install.cmake
 Makefile
 
+website/.next/
+website/node_modules/
+website/.next
