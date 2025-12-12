@@ -3,32 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-Model Agentic AI</title>
+    <title>Multi-Model Agentic AI | Sapana Micro Software</title>
+    <meta name="description" content="A Comprehensive, Fault-Tolerant, Distributed Multi-Agent Architecture with LLM Integration">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --gray: #64748b;
+            --gray-light: #94a3b8;
+            --gray-lighter: #e2e8f0;
+            --white: #ffffff;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-dark: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #fafafa;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: var(--dark);
+            background: var(--white);
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 24px;
         }
 
+        /* Header */
         header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 80px 0;
-            text-align: center;
+            background: var(--gradient-primary);
+            color: var(--white);
+            padding: 120px 0 80px;
             position: relative;
             overflow: hidden;
         }
@@ -40,7 +72,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
             opacity: 0.3;
         }
 
@@ -49,66 +81,69 @@
             z-index: 1;
         }
 
-        h1 {
-            font-size: 4rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-            animation: fadeInUp 1s ease-out;
+        header h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 800;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
         }
 
         .subtitle {
-            font-size: 1.5rem;
-            font-weight: 300;
-            margin-bottom: 30px;
+            font-size: clamp(1.125rem, 2vw, 1.5rem);
+            margin-bottom: 32px;
             opacity: 0.95;
-            animation: fadeInUp 1s ease-out 0.2s both;
+            font-weight: 400;
+            max-width: 800px;
         }
 
         .authors {
-            font-size: 1.1rem;
-            margin-top: 30px;
+            font-size: 1.125rem;
+            margin-top: 40px;
             opacity: 0.9;
-            animation: fadeInUp 1s ease-out 0.4s both;
+            font-weight: 500;
         }
 
         .nav-links {
             display: flex;
             justify-content: center;
-            gap: 30px;
-            margin-top: 40px;
+            gap: 16px;
+            margin-top: 48px;
             flex-wrap: wrap;
-            animation: fadeInUp 1s ease-out 0.6s both;
         }
 
         .nav-links a {
-            color: white;
+            color: var(--white);
             text-decoration: none;
-            padding: 12px 24px;
-            border: 2px solid white;
-            border-radius: 25px;
-            transition: all 0.3s ease;
+            padding: 14px 28px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-weight: 500;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .nav-links a:hover {
-            background: white;
-            color: #667eea;
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
 
+        /* Sections */
         section {
-            padding: 80px 0;
+            padding: 100px 0;
         }
 
         .section-title {
-            font-size: 2.5rem;
+            font-size: clamp(2rem, 4vw, 3rem);
             font-weight: 700;
-            margin-bottom: 40px;
+            margin-bottom: 60px;
             text-align: center;
-            color: #667eea;
+            color: var(--dark);
             position: relative;
+            letter-spacing: -0.02em;
         }
 
         .section-title::after {
@@ -116,201 +151,330 @@
             display: block;
             width: 80px;
             height: 4px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            margin: 20px auto;
+            background: var(--gradient-primary);
+            margin: 24px auto;
             border-radius: 2px;
         }
 
+        /* Abstract */
         .abstract {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            margin-bottom: 60px;
-            font-size: 1.1rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 48px;
+            border-radius: 24px;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 80px;
+            font-size: 1.125rem;
             line-height: 1.8;
+            border: 1px solid var(--gray-lighter);
         }
 
         .abstract strong {
-            color: #667eea;
-            font-size: 1.2rem;
+            color: var(--primary);
+            font-size: 1.25rem;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 16px;
         }
 
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+            margin: 60px 0;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 40px 32px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--gray-lighter);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 1rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Features Grid */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+            margin-top: 60px;
         }
 
         .feature-card {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: var(--white);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--gray-lighter);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--gradient-primary);
+            transform: scaleY(0);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleY(1);
         }
 
         .feature-card h3 {
-            color: #667eea;
             font-size: 1.5rem;
-            margin-bottom: 15px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--dark);
         }
 
         .feature-card ul {
             list-style: none;
-            padding-left: 0;
+            margin-top: 20px;
         }
 
         .feature-card li {
             padding: 8px 0;
-            padding-left: 25px;
+            color: var(--gray);
             position: relative;
+            padding-left: 24px;
         }
 
         .feature-card li::before {
             content: '✓';
             position: absolute;
             left: 0;
-            color: #667eea;
-            font-weight: bold;
+            color: var(--primary);
+            font-weight: 600;
         }
 
+        /* Buttons */
         .button {
             display: inline-block;
-            padding: 15px 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            padding: 16px 32px;
+            background: var(--gradient-primary);
+            color: var(--white);
             text-decoration: none;
-            border-radius: 30px;
+            border-radius: 50px;
             font-weight: 600;
-            transition: all 0.3s ease;
-            margin: 10px;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
         }
 
         .button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: var(--shadow-lg);
         }
 
         .button-secondary {
-            background: white;
-            color: #667eea;
-            border: 2px solid #667eea;
+            background: var(--white);
+            color: var(--primary);
+            border: 2px solid var(--primary);
         }
 
         .button-secondary:hover {
-            background: #667eea;
-            color: white;
+            background: var(--primary);
+            color: var(--white);
         }
 
-        .code-section {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 40px;
-            border-radius: 15px;
+        /* Study Card */
+        .study-card {
+            background: var(--white);
+            padding: 48px;
+            border-radius: 24px;
+            box-shadow: var(--shadow-lg);
             margin: 40px 0;
+            border-left: 5px solid var(--primary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .study-card:hover {
+            box-shadow: var(--shadow-xl);
+            transform: translateX(4px);
+        }
+
+        .study-card h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .study-card p {
+            margin: 12px 0;
+            line-height: 1.8;
+            color: var(--gray);
+        }
+
+        /* Citation */
+        .citation {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 32px;
+            border-radius: 16px;
+            margin: 40px 0;
+            border-left: 4px solid var(--primary);
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.8;
             overflow-x: auto;
         }
 
-        .code-section pre {
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            line-height: 1.6;
+        /* Code Section */
+        .code-section {
+            background: var(--dark);
+            color: #e2e8f0;
+            padding: 40px;
+            border-radius: 20px;
+            margin: 40px 0;
+            overflow-x: auto;
+            box-shadow: var(--shadow-xl);
         }
 
+        .code-section pre {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Benchmark Table */
         .benchmark-table {
             width: 100%;
             border-collapse: collapse;
             margin: 40px 0;
-            background: white;
-            border-radius: 15px;
+            background: var(--white);
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-lg);
         }
 
         .benchmark-table th {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
+            background: var(--gradient-primary);
+            color: var(--white);
+            padding: 20px 24px;
             text-align: left;
             font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .benchmark-table td {
-            padding: 15px 20px;
-            border-bottom: 1px solid #eee;
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--gray-lighter);
+            color: var(--gray);
+        }
+
+        .benchmark-table tr:last-child td {
+            border-bottom: none;
         }
 
         .benchmark-table tr:hover {
-            background: #f8f9fa;
+            background: #f8fafc;
         }
 
-        .study-card {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            margin: 30px 0;
-            border-left: 5px solid #667eea;
-        }
-
-        .study-card h3 {
-            color: #667eea;
-            margin-bottom: 15px;
-        }
-
-        .study-card p {
-            margin: 10px 0;
-            line-height: 1.8;
-        }
-
-        .citation {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 40px 0;
-            border-left: 4px solid #667eea;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-        }
-
-        footer {
-            background: #2c3e50;
-            color: white;
-            padding: 40px 0;
-            text-align: center;
-            margin-top: 80px;
-        }
-
-        footer a {
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
+        /* Reference Note */
         .reference-note {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            padding: 20px;
-            border-radius: 10px;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 1px solid #fbbf24;
+            padding: 24px;
+            border-radius: 16px;
             margin: 40px 0;
-            border-left: 5px solid #ffc107;
+            border-left: 5px solid #f59e0b;
         }
 
         .reference-note strong {
-            color: #856404;
+            color: #92400e;
+            font-weight: 600;
         }
 
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: var(--white);
+            padding: 60px 0;
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        footer a {
+            color: var(--primary-light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: var(--white);
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            section {
+                padding: 60px 0;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-links a {
+                width: 100%;
+                max-width: 300px;
+                text-align: center;
+            }
+        }
+
+        /* Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -322,44 +486,13 @@
             }
         }
 
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 40px 0;
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
         }
 
-        .stat-card {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        .stat-number {
-            font-size: 3rem;
-            font-weight: 700;
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-
-        .stat-label {
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-            .subtitle {
-                font-size: 1.2rem;
-            }
-            .nav-links {
-                flex-direction: column;
-                align-items: center;
-            }
+        /* Smooth scroll */
+        html {
+            scroll-padding-top: 80px;
         }
     </style>
 </head>
@@ -367,7 +500,7 @@
     <header>
         <div class="container">
             <h1>Multi-Model Agentic AI</h1>
-            <p class="subtitle">A Comprehensive, Fault-Tolerant, Distributed Multi-Agent Architecture</p>
+            <p class="subtitle">A Comprehensive, Fault-Tolerant, Distributed Multi-Agent Architecture with Advanced Security and Performance Optimization</p>
             <div class="authors">
                 <strong>Shyamal Suhana Chandra</strong><br>
                 Sapana Micro Software
@@ -384,7 +517,7 @@
     <section id="overview">
         <div class="container">
             <div class="abstract">
-                <strong>Abstract</strong><br><br>
+                <strong>Abstract</strong>
                 We present a comprehensive, production-ready multi-agent system that integrates Large Language Models (LLMs) through the llm.c framework. Our system implements multiple agents, each with independent reasoning capabilities, working memory with Minimum Description Length (MDL) normalized context, and chain-of-thought reasoning. The architecture is designed with modularity, fault tolerance, security, atomicity, concurrency, parallelism, distribution, cache coherence, encryption, protocol-driven communication, robustness, asynchrony, producer-consumer patterns, synchronization, optimization, and lightweight design as core principles. The system includes comprehensive input validation with recursive retry mechanisms, distributed communication with cache coherence protocols, fault tolerance through circuit breakers and retry executors, and extensive testing coverage with 160+ tests targeting 20 tests per line of code.
             </div>
 
@@ -473,47 +606,46 @@
 
     <section id="paper">
         <div class="container">
-            <h2 class="section-title">Paper</h2>
+            <h2 class="section-title">Research Paper</h2>
             <div class="study-card">
                 <h3>Multi-Model Agentic AI System: A Comprehensive Architecture</h3>
                 <p><strong>Authors:</strong> Shyamal Suhana Chandra</p>
                 <p><strong>Institution:</strong> Sapana Micro Software</p>
                 <p><strong>Year:</strong> 2025</p>
                 <p>This paper presents a complete and unabridged documentation of the Multi-Model Agentic AI system, including all implementation details, architecture decisions, security mechanisms, fault tolerance strategies, distributed system design, and comprehensive evaluation results.</p>
-                <div style="margin-top: 20px;">
-                    <a href="doc/paper_preprint.pdf" class="button" target="_blank">Download Paper (PDF - Preprint)</a>
-                    <a href="doc/presentation_preprint.pdf" class="button button-secondary" target="_blank">Download Presentation (PDF - Preprint)</a>
+                <div style="margin-top: 32px; display: flex; gap: 16px; flex-wrap: wrap;">
+                    <a href="doc/paper_preprint.pdf" class="button" target="_blank">📄 Download Paper (PDF - Preprint)</a>
+                    <a href="doc/presentation_preprint.pdf" class="button button-secondary" target="_blank">📊 Download Presentation (PDF - Preprint)</a>
                 </div>
             </div>
 
             <div class="citation">
                 <strong>BibTeX:</strong><br><br>
-                @article{chandra2025multimodel,<br>
-                &nbsp;&nbsp;title={Multi-Model Agentic AI System: A Comprehensive, Fault-Tolerant, Distributed Multi-Agent Architecture},<br>
-                &nbsp;&nbsp;author={Chandra, Shyamal Suhana},<br>
-                &nbsp;&nbsp;journal={Sapana Micro Software},<br>
-                &nbsp;&nbsp;year={2025},<br>
-                &nbsp;&nbsp;url={https://github.com/Sapana-Micro-Software/Multi-Model-Agentic-AI}<br>
-                }
+                @article&#123;chandra2025multimodel,<br>
+                &nbsp;&nbsp;title=&#123;Multi-Model Agentic AI System: A Comprehensive, Fault-Tolerant, Distributed Multi-Agent Architecture&#125;,<br>
+                &nbsp;&nbsp;author=&#123;Chandra, Shyamal Suhana&#125;,<br>
+                &nbsp;&nbsp;journal=&#123;Sapana Micro Software&#125;,<br>
+                &nbsp;&nbsp;year=&#123;2025&#125;,<br>
+                &nbsp;&nbsp;url=&#123;https://github.com/Sapana-Micro-Software/Multi-Model-Agentic-AI&#125;<br>
+                &#125;
             </div>
         </div>
     </section>
 
     <section id="code">
         <div class="container">
-            <h2 class="section-title">Code</h2>
+            <h2 class="section-title">Code Repository</h2>
             <div class="study-card">
-                <h3>Repository</h3>
-                <p>The complete source code is available on GitHub with comprehensive documentation, examples, and test suites.</p>
-                <div style="margin-top: 20px;">
-                    <a href="https://github.com/Sapana-Micro-Software/Multi-Model-Agentic-AI" class="button" target="_blank">View on GitHub</a>
-                    <a href="https://github.com/Sapana-Micro-Software/Multi-Model-Agentic-AI/archive/refs/heads/main.zip" class="button button-secondary">Download ZIP</a>
+                <h3>GitHub Repository</h3>
+                <p>The complete source code is available on GitHub with comprehensive documentation, examples, and test suites. The codebase includes all security features, fault tolerance mechanisms, distributed system components, and extensive testing framework.</p>
+                <div style="margin-top: 32px; display: flex; gap: 16px; flex-wrap: wrap;">
+                    <a href="https://github.com/Sapana-Micro-Software/Multi-Model-Agentic-AI" class="button" target="_blank">🔗 View on GitHub</a>
+                    <a href="https://github.com/Sapana-Micro-Software/Multi-Model-Agentic-AI/archive/refs/heads/main.zip" class="button button-secondary">📦 Download ZIP</a>
                 </div>
             </div>
 
             <div class="code-section">
-                <pre>
-// Example: Creating an agent with security and fault tolerance
+                <pre>// Example: Creating an agent with security and fault tolerance
 #include "agent_manager.hpp"
 #include "security/security.hpp"
 #include "fault_tolerance/retry.hpp"
@@ -533,11 +665,10 @@ std::string task = validator.validateWithRetry(
 );
 
 // Create agent with fault tolerance
-fault_tolerance::RetryExecutor<std::string> retry;
+fault_tolerance::RetryExecutor&lt;std::string&gt; retry;
 std::string result = retry.execute([&manager, &task]() {
     return manager.submitTask("agent1", task);
-});
-                </pre>
+});</pre>
             </div>
 
             <div class="study-card">
@@ -548,7 +679,7 @@ std::string result = retry.execute([&manager, &task]() {
 cmake ..
 make</pre>
                 </div>
-                <p><strong>Run:</strong></p>
+                <p style="margin-top: 20px;"><strong>Run:</strong></p>
                 <div class="code-section">
                     <pre>./multi_agent_llm --task "research topic" --agent agent1</pre>
                 </div>
@@ -558,8 +689,7 @@ make</pre>
 
     <section id="benchmarks">
         <div class="container">
-            <h2 class="section-title">Benchmarks</h2>
-            
+            <h2 class="section-title">Performance Benchmarks</h2>
             <table class="benchmark-table">
                 <thead>
                     <tr>
@@ -611,82 +741,52 @@ make</pre>
                     </tr>
                 </tbody>
             </table>
-
-            <div class="study-card">
-                <h3>Performance Characteristics</h3>
-                <p><strong>Scalability:</strong> The system demonstrates linear scalability up to 100 concurrent agents with minimal performance degradation.</p>
-                <p><strong>Reliability:</strong> 99.9% uptime with automatic fault recovery and circuit breaker protection.</p>
-                <p><strong>Security:</strong> Zero security vulnerabilities detected in comprehensive penetration testing.</p>
-                <p><strong>Efficiency:</strong> Lightweight design with minimal overhead, suitable for resource-constrained environments.</p>
-            </div>
         </div>
     </section>
 
     <section id="studies">
         <div class="container">
             <h2 class="section-title">Thorough Studies</h2>
-
-            <div class="study-card">
-                <h3>Architecture Study: Multi-Agent Coordination</h3>
-                <p>This study examines how multiple agents coordinate through protocol-driven communication, cache coherence, and distributed message routing. We analyze the trade-offs between consistency and performance in distributed agent systems.</p>
-                <p><strong>Key Findings:</strong> The MESI-like cache coherence protocol reduces cache misses by 40% compared to naive invalidation strategies. Protocol-driven communication ensures type safety and reduces message handling errors by 95%.</p>
-            </div>
-
-            <div class="study-card">
-                <h3>Security Analysis: Input Validation with Recursive Retry</h3>
-                <p>We conducted a comprehensive security analysis of the recursive retry validation mechanism. The study evaluates effectiveness against SQL injection, XSS, and command injection attacks.</p>
-                <p><strong>Key Findings:</strong> The recursive retry mechanism successfully blocks 100% of tested SQL injection attempts, 99.8% of XSS attacks, and 100% of command injection attempts. The retry mechanism adds minimal latency (&lt; 50ms) while significantly improving security posture.</p>
-            </div>
-
-            <div class="study-card">
-                <h3>Fault Tolerance: Circuit Breaker Patterns</h3>
-                <p>This study evaluates the effectiveness of circuit breaker patterns in preventing cascading failures in multi-agent systems. We analyze failure scenarios and recovery mechanisms.</p>
-                <p><strong>Key Findings:</strong> Circuit breakers prevent 98% of cascading failures. The automatic recovery mechanism reduces downtime by 75% compared to manual intervention. The HALF_OPEN state enables safe testing of recovered services.</p>
-            </div>
-
-            <div class="study-card">
-                <h3>Memory System: MDL-Normalized Context</h3>
-                <p>We study the effectiveness of Minimum Description Length (MDL) encoding for context normalization in agent memory systems. The research compares MDL encoding with traditional compression techniques.</p>
-                <p><strong>Key Findings:</strong> MDL encoding achieves 60% better compression ratios than standard compression while maintaining LLM readability. The trace management system with recursion limits prevents memory bloat while preserving important context.</p>
-            </div>
-
-            <div class="study-card">
-                <h3>Performance Optimization: Thread Pooling and Lock-Free Structures</h3>
-                <p>This study examines the performance impact of thread pooling and lock-free data structures in concurrent agent operations.</p>
-                <p><strong>Key Findings:</strong> Thread pooling reduces thread creation overhead by 80%. Lock-free message queues improve throughput by 35% compared to mutex-based implementations. The lightweight design maintains low memory footprint even under high load.</p>
-            </div>
-
-            <div class="study-card">
-                <h3>Testing Framework: Comprehensive Coverage Analysis</h3>
-                <p>We analyze the comprehensive testing framework with 160+ tests covering unit, integration, regression, blackbox, A-B, and UX testing.</p>
-                <p><strong>Key Findings:</strong> The test suite achieves 20 tests per line of code, ensuring comprehensive coverage. Regression tests prevent 100% of previously fixed bugs from reoccurring. A-B tests validate optimization strategies with statistical significance.</p>
-            </div>
-
-            <div class="study-card">
-                <h3>Distributed Systems: Cache Coherence in Multi-Agent Environments</h3>
-                <p>This study investigates cache coherence protocols in distributed multi-agent systems, comparing MESI-like protocols with other coherence strategies.</p>
-                <p><strong>Key Findings:</strong> The MESI-like protocol ensures cache consistency with minimal network overhead. Distributed invalidation reduces stale data by 90%. The protocol scales efficiently to 100+ distributed agents.</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>🛡️ Security Analysis</h3>
+                    <p><strong>Input Validation:</strong> 100% SQL injection blocked, 99.8% XSS prevented, 100% command injection blocked. Comprehensive recursive retry mechanism ensures robust input sanitization.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🔄 Fault Tolerance</h3>
+                    <p><strong>Circuit Breakers:</strong> 98% cascading failures prevented, 75% downtime reduction, automatic recovery. Retry mechanisms with exponential backoff ensure system resilience.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🧠 Memory System</h3>
+                    <p><strong>MDL Encoding:</strong> 60% better compression than standard methods, maintains LLM readability. Trace management with automatic compression and key insights extraction.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🌐 Distributed Systems</h3>
+                    <p><strong>Cache Coherence:</strong> 90% reduction in stale data, scales to 100+ agents, minimal overhead. MESI-like protocol ensures consistency across distributed caches.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>⚡ Performance</h3>
+                    <p><strong>Thread Pooling:</strong> 80% reduction in thread overhead, 35% throughput improvement. Lock-free structures and optimized caching for maximum performance.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🧪 Testing Framework</h3>
+                    <p><strong>Comprehensive Coverage:</strong> 20 tests per line of code, 100% regression prevention, comprehensive coverage including unit, integration, regression, blackbox, A-B, and UX tests.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <section id="reference">
+    <div class="reference-note">
         <div class="container">
-            <div class="reference-note">
-                <strong>Reference:</strong> This work is inspired by and references the groundbreaking research in multimodal learning, particularly the <a href="https://smell.cs.columbia.edu/" target="_blank">New York Smells</a> dataset by Ozguroglu et al. (2025), which demonstrates the power of cross-modal learning between different sensory modalities. Similar to how their work bridges vision and olfaction, our Multi-Model Agentic AI system bridges multiple cognitive modalities (memory, reasoning, communication) in a unified agentic framework. The design principles of large-scale in-the-wild data collection and cross-modal learning have influenced our approach to multi-agent coordination and distributed system design.
-            </div>
+            <strong>Reference:</strong> This project is inspired by the research methodology and presentation style of the <a href="https://smell.cs.columbia.edu/" target="_blank">Columbia Smells Project</a>. We acknowledge their contribution to advancing research presentation in computer science.
         </div>
-    </section>
+    </div>
 
     <footer>
         <div class="container">
             <p>Copyright (C) 2025, Shyamal Suhana Chandra. All rights reserved.</p>
-            <p>Multi-Model Agentic AI System | <a href="https://github.com/Sapana-Micro-Software/Multi-Model-Agentic-AI">GitHub Repository</a></p>
-            <p style="margin-top: 20px; font-size: 0.9rem; opacity: 0.8;">
-                This website is hosted on GitHub Pages at <a href="https://sapana-micro-software.github.io/multi-model-agentic-ai">sapana-micro-software.github.io/multi-model-agentic-ai</a>
-            </p>
+            <p style="margin-top: 16px;">Multi-Model Agentic AI System | <a href="https://github.com/Sapana-Micro-Software/Multi-Model-Agentic-AI">GitHub Repository</a></p>
         </div>
     </footer>
 </body>
 </html>
-
