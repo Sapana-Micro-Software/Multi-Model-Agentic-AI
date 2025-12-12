@@ -116,5 +116,5 @@ See `examples/example_usage.cpp` for a complete example.
 
 ## License
 
-[Add your license here]
+Copyright (C) 2025, Shyamal Suhana Chandra
 
