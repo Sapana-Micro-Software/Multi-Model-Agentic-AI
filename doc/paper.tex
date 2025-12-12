@@ -130,18 +130,18 @@ The validation process uses a recursive retry algorithm:
 \begin{algorithm}[H]
 \caption{Recursive Input Validation with Retry}
 \begin{algorithmic}
-\REQUIRE Input string $s$, validator function $v$, sanitizer function $san$, max retries $max$
-\ENSURE Validated and sanitized string or empty string
-\FUNCTION{ValidateRecursive}{$s$, $v$, $san$, $attempt$}
-    \IF{$attempt \geq max$}
-        \RETURN empty string
-    \ENDIF
-    \STATE $s_{san} \gets san(s)$
-    \IF{$v(s_{san})$}
-        \RETURN $s_{san}$
-    \ENDIF
-    \RETURN \CALL{ValidateRecursive}{$s_{san}$, $v$, $san$, $attempt + 1$}
-\ENDFUNCTION
+\Require Input string $s$, validator function $v$, sanitizer function $san$, max retries $max$
+\Ensure Validated and sanitized string or empty string
+\Function{ValidateRecursive}{$s$, $v$, $san$, $attempt$}
+    \If{$attempt \geq max$}
+        \State \Return empty string
+    \EndIf
+    \State $s_{san} \gets san(s)$
+    \If{$v(s_{san})$}
+        \State \Return $s_{san}$
+    \EndIf
+    \State \Return \Call{ValidateRecursive}{$s_{san}$, $v$, $san$, $attempt + 1$}
+\EndFunction
 \end{algorithmic}
 \end{algorithm}
 
