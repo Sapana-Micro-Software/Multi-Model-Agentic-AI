@@ -45,6 +45,9 @@ jobs:
           cp doc/paper_preprint.pdf docs/doc/ 2>/dev/null || true
           cp doc/presentation_preprint.pdf docs/doc/ 2>/dev/null || true
           echo "✅ PDFs also copied to docs/doc/"
+          # Verify PDFs exist
+          ls -lh doc/*preprint.pdf
+          ls -lh docs/doc/*preprint.pdf || echo "PDFs in docs/doc/ will be available after copy"
 
       - name: Setup Git
         run: |
@@ -66,32 +69,60 @@ jobs:
           cp -r docs/* .
           [ -f docs/.nojekyll ] && cp docs/.nojekyll . || touch .nojekyll
           
-          # Copy watermarked PDFs to doc/ folder (from temp storage)
+          # Copy watermarked PDFs to doc/ folder (from temp storage or docs/doc/)
           mkdir -p doc
+          
+          # Try multiple sources for paper PDF
           if [ -f /tmp/watermarked_pdfs/paper_preprint.pdf ]; then
             cp /tmp/watermarked_pdfs/paper_preprint.pdf doc/paper_preprint.pdf
             echo "✅ Copied paper PDF from temp storage"
+          elif [ -f docs/doc/paper_preprint.pdf ]; then
+            cp docs/doc/paper_preprint.pdf doc/paper_preprint.pdf
+            echo "✅ Copied paper PDF from docs/doc/"
           elif [ -f doc/paper_preprint.pdf ]; then
             echo "✅ Paper PDF already in doc/"
           else
-            echo "❌ ERROR: Paper PDF not found!"
+            echo "⚠️  Paper PDF not found - will try to copy from source after checkout"
           fi
           
+          # Try multiple sources for presentation PDF
           if [ -f /tmp/watermarked_pdfs/presentation_preprint.pdf ]; then
             cp /tmp/watermarked_pdfs/presentation_preprint.pdf doc/presentation_preprint.pdf
             echo "✅ Copied presentation PDF from temp storage"
+          elif [ -f docs/doc/presentation_preprint.pdf ]; then
+            cp docs/doc/presentation_preprint.pdf doc/presentation_preprint.pdf
+            echo "✅ Copied presentation PDF from docs/doc/"
           elif [ -f doc/presentation_preprint.pdf ]; then
             echo "✅ Presentation PDF already in doc/"
           else
-            echo "❌ ERROR: Presentation PDF not found!"
+            echo "⚠️  Presentation PDF not found - will try to copy from source after checkout"
           fi
           
           # Final verification
           echo "Final PDF check in doc/ folder:"
-          ls -lh doc/*.pdf || echo "ERROR: No PDFs found in doc/!"
+          ls -lh doc/*.pdf 2>/dev/null || echo "⚠️  No PDFs found in doc/ - checking other locations..."
           echo ""
           echo "All files in doc/:"
-          ls -la doc/ || echo "doc/ folder doesn't exist!"
+          ls -la doc/ 2>/dev/null || echo "doc/ folder doesn't exist!"
+          
+          # Ensure PDFs are present - if not, copy from docs/doc/ which should have them
+          if [ ! -f doc/paper_preprint.pdf ] && [ -f docs/doc/paper_preprint.pdf ]; then
+            cp docs/doc/paper_preprint.pdf doc/paper_preprint.pdf
+            echo "✅ Paper PDF copied from docs/doc/ as fallback"
+          fi
+          if [ ! -f doc/presentation_preprint.pdf ] && [ -f docs/doc/presentation_preprint.pdf ]; then
+            cp docs/doc/presentation_preprint.pdf doc/presentation_preprint.pdf
+            echo "✅ Presentation PDF copied from docs/doc/ as fallback"
+          fi
+          
+          # Final check
+          if [ -f doc/paper_preprint.pdf ] && [ -f doc/presentation_preprint.pdf ]; then
+            echo "✅✅✅ Both PDFs are present in doc/ folder!"
+            ls -lh doc/*preprint.pdf
+          else
+            echo "❌ ERROR: PDFs still missing after all attempts!"
+            exit 1
+          fi
           
           git add -A
           if git diff --staged --quiet; then
