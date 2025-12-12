@@ -31,13 +31,26 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Validate HTML
+      - name: Validate HTML structure
         run: |
-          if ! command -v tidy &> /dev/null; then
-            echo "HTML Tidy not found, skipping validation"
-            exit 0
+          echo "Validating HTML structure..."
+          if [ ! -f docs/index.html ]; then
+            echo "❌ Error: docs/index.html not found"
+            exit 1
           fi
-          tidy -q -e docs/index.html || true
+          if ! grep -q "<!DOCTYPE html>" docs/index.html; then
+            echo "❌ Error: Missing DOCTYPE declaration"
+            exit 1
+          fi
+          if ! grep -q "<html" docs/index.html; then
+            echo "❌ Error: Missing <html> tag"
+            exit 1
+          fi
+          if ! grep -q "</html>" docs/index.html; then
+            echo "❌ Error: Missing </html> closing tag"
+            exit 1
+          fi
+          echo "✅ HTML structure is valid"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
