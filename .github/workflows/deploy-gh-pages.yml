@@ -48,22 +48,38 @@ jobs:
 
       - name: Deploy to gh-pages
         run: |
+          # Store watermarked PDFs before checkout
+          mkdir -p /tmp/watermarked_pdfs
+          cp doc/paper_preprint.pdf /tmp/watermarked_pdfs/ 2>/dev/null || echo "Paper PDF not found"
+          cp doc/presentation_preprint.pdf /tmp/watermarked_pdfs/ 2>/dev/null || echo "Presentation PDF not found"
+          
           git fetch origin gh-pages:gh-pages || true
           git checkout gh-pages || git checkout -b gh-pages
           git rm -rf . --ignore-unmatch || true
           cp -r docs/* .
           [ -f docs/.nojekyll ] && cp docs/.nojekyll . || touch .nojekyll
-          # Copy watermarked PDFs from source to doc/ folder
+          
+          # Copy watermarked PDFs to doc/ folder
           mkdir -p doc
-          if [ -f ../doc/paper_preprint.pdf ]; then
-            cp ../doc/paper_preprint.pdf doc/paper_preprint.pdf
-          fi
-          if [ -f ../doc/presentation_preprint.pdf ]; then
-            cp ../doc/presentation_preprint.pdf doc/presentation_preprint.pdf
-          fi
+          cp /tmp/watermarked_pdfs/paper_preprint.pdf doc/ 2>/dev/null || echo "Warning: Could not copy paper PDF"
+          cp /tmp/watermarked_pdfs/presentation_preprint.pdf doc/ 2>/dev/null || echo "Warning: Could not copy presentation PDF"
+          
           # Verify PDFs are present
           echo "PDFs in doc/ folder:"
-          ls -lh doc/*.pdf || echo "No PDFs found"
+          ls -lh doc/*.pdf || echo "No PDFs found - checking source..."
+          if [ ! -f doc/paper_preprint.pdf ] && [ -f docs/doc/paper_preprint.pdf ]; then
+            cp docs/doc/paper_preprint.pdf doc/paper_preprint.pdf
+            echo "Copied paper PDF from docs/doc/"
+          fi
+          if [ ! -f doc/presentation_preprint.pdf ] && [ -f docs/doc/presentation_preprint.pdf ]; then
+            cp docs/doc/presentation_preprint.pdf doc/presentation_preprint.pdf
+            echo "Copied presentation PDF from docs/doc/"
+          fi
+          
+          # Final verification
+          echo "Final PDF check:"
+          ls -lh doc/*.pdf || echo "ERROR: No PDFs found!"
+          
           git add -A
           if git diff --staged --quiet; then
             echo "No changes to commit"
