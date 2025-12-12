@@ -40,6 +40,11 @@ jobs:
           python3 scripts/add_watermark.py doc/paper.pdf doc/paper_preprint.pdf
           python3 scripts/add_watermark.py doc/presentation.pdf doc/presentation_preprint.pdf
           echo "✅ Watermarked PDFs created"
+          # Copy to docs/doc/ as backup
+          mkdir -p docs/doc
+          cp doc/paper_preprint.pdf docs/doc/ 2>/dev/null || true
+          cp doc/presentation_preprint.pdf docs/doc/ 2>/dev/null || true
+          echo "✅ PDFs also copied to docs/doc/"
 
       - name: Setup Git
         run: |
@@ -48,10 +53,12 @@ jobs:
 
       - name: Deploy to gh-pages
         run: |
-          # Store watermarked PDFs before checkout
+          # Store watermarked PDFs before checkout (they're in doc/ and docs/doc/)
           mkdir -p /tmp/watermarked_pdfs
-          cp doc/paper_preprint.pdf /tmp/watermarked_pdfs/ 2>/dev/null || echo "Paper PDF not found"
-          cp doc/presentation_preprint.pdf /tmp/watermarked_pdfs/ 2>/dev/null || echo "Presentation PDF not found"
+          cp doc/paper_preprint.pdf /tmp/watermarked_pdfs/ 2>/dev/null || echo "Paper PDF not in doc/"
+          cp doc/presentation_preprint.pdf /tmp/watermarked_pdfs/ 2>/dev/null || echo "Presentation PDF not in doc/"
+          cp docs/doc/paper_preprint.pdf /tmp/watermarked_pdfs/ 2>/dev/null || echo "Paper PDF not in docs/doc/"
+          cp docs/doc/presentation_preprint.pdf /tmp/watermarked_pdfs/ 2>/dev/null || echo "Presentation PDF not in docs/doc/"
           
           git fetch origin gh-pages:gh-pages || true
           git checkout gh-pages || git checkout -b gh-pages
@@ -59,26 +66,32 @@ jobs:
           cp -r docs/* .
           [ -f docs/.nojekyll ] && cp docs/.nojekyll . || touch .nojekyll
           
-          # Copy watermarked PDFs to doc/ folder
+          # Copy watermarked PDFs to doc/ folder (from temp storage)
           mkdir -p doc
-          cp /tmp/watermarked_pdfs/paper_preprint.pdf doc/ 2>/dev/null || echo "Warning: Could not copy paper PDF"
-          cp /tmp/watermarked_pdfs/presentation_preprint.pdf doc/ 2>/dev/null || echo "Warning: Could not copy presentation PDF"
-          
-          # Verify PDFs are present
-          echo "PDFs in doc/ folder:"
-          ls -lh doc/*.pdf || echo "No PDFs found - checking source..."
-          if [ ! -f doc/paper_preprint.pdf ] && [ -f docs/doc/paper_preprint.pdf ]; then
-            cp docs/doc/paper_preprint.pdf doc/paper_preprint.pdf
-            echo "Copied paper PDF from docs/doc/"
+          if [ -f /tmp/watermarked_pdfs/paper_preprint.pdf ]; then
+            cp /tmp/watermarked_pdfs/paper_preprint.pdf doc/paper_preprint.pdf
+            echo "✅ Copied paper PDF from temp storage"
+          elif [ -f doc/paper_preprint.pdf ]; then
+            echo "✅ Paper PDF already in doc/"
+          else
+            echo "❌ ERROR: Paper PDF not found!"
           fi
-          if [ ! -f doc/presentation_preprint.pdf ] && [ -f docs/doc/presentation_preprint.pdf ]; then
-            cp docs/doc/presentation_preprint.pdf doc/presentation_preprint.pdf
-            echo "Copied presentation PDF from docs/doc/"
+          
+          if [ -f /tmp/watermarked_pdfs/presentation_preprint.pdf ]; then
+            cp /tmp/watermarked_pdfs/presentation_preprint.pdf doc/presentation_preprint.pdf
+            echo "✅ Copied presentation PDF from temp storage"
+          elif [ -f doc/presentation_preprint.pdf ]; then
+            echo "✅ Presentation PDF already in doc/"
+          else
+            echo "❌ ERROR: Presentation PDF not found!"
           fi
           
           # Final verification
-          echo "Final PDF check:"
-          ls -lh doc/*.pdf || echo "ERROR: No PDFs found!"
+          echo "Final PDF check in doc/ folder:"
+          ls -lh doc/*.pdf || echo "ERROR: No PDFs found in doc/!"
+          echo ""
+          echo "All files in doc/:"
+          ls -la doc/ || echo "doc/ folder doesn't exist!"
           
           git add -A
           if git diff --staged --quiet; then
