@@ -1,6 +1,5 @@
 /*
  * Copyright (C) 2025, Shyamal Suhana Chandra
- * No MIT License
  * 
  * Comprehensive test framework: Unit, Integration, Regression, Blackbox, A-B, UX tests
  */

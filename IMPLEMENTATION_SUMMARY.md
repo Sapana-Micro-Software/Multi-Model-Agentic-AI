@@ -2,7 +2,6 @@
 
 ## Copyright
 Copyright (C) 2025, Shyamal Suhana Chandra  
-No MIT License
 
 ## Overview
 

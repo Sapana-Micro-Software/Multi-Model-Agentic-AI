@@ -1,6 +1,5 @@
 /*
  * Copyright (C) 2025, Shyamal Suhana Chandra
- * No MIT License
  * 
  * Fault tolerance: Retry mechanisms, error recovery, graceful degradation
  */

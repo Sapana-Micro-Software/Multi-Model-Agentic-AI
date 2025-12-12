@@ -1,6 +1,5 @@
 /*
  * Copyright (C) 2025, Shyamal Suhana Chandra
- * No MIT License
  * 
  * Distributed system support: Network communication, remote agents
  */

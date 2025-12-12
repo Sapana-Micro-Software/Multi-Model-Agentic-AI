@@ -1,6 +1,5 @@
 /*
  * Copyright (C) 2025, Shyamal Suhana Chandra
- * No MIT License
  * 
  * Cache coherence system with distributed caching
  */
