@@ -1,0 +1,47 @@
+name: Deploy to gh-pages Branch
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate HTML
+        run: |
+          if [ ! -f docs/index.html ]; then
+            echo "❌ Error: docs/index.html not found"
+            exit 1
+          fi
+          if ! grep -q "<!DOCTYPE html>" docs/index.html; then
+            echo "❌ Error: Missing DOCTYPE"
+            exit 1
+          fi
+          echo "✅ HTML is valid"
+
+      - name: Setup Git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+      - name: Deploy to gh-pages
+        run: |
+          git checkout gh-pages || git checkout -b gh-pages
+          git rm -rf . || true
+          cp -r docs/* .
+          cp docs/.nojekyll . 2>/dev/null || touch .nojekyll
+          git add -A
+          git commit -m "Deploy website from main branch [skip ci]" || exit 0
+          git push origin gh-pages --force
+
