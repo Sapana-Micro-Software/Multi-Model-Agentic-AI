@@ -37,17 +37,42 @@ jobs:
 
       - name: Add Preprint watermark to PDFs
         run: |
-          python3 scripts/add_watermark.py doc/paper.pdf doc/paper_preprint.pdf
-          python3 scripts/add_watermark.py doc/presentation.pdf doc/presentation_preprint.pdf
-          echo "✅ Watermarked PDFs created"
-          # Copy to docs/doc/ as backup
+          # Check if source PDFs exist
+          if [ ! -f doc/paper.pdf ] || [ ! -f doc/presentation.pdf ]; then
+            echo "⚠️  Source PDFs not found, using existing watermarked PDFs if available"
+            if [ -f docs/doc/paper_preprint.pdf ]; then
+              echo "✅ Using existing paper_preprint.pdf from docs/doc/"
+            fi
+            if [ -f docs/doc/presentation_preprint.pdf ]; then
+              echo "✅ Using existing presentation_preprint.pdf from docs/doc/"
+            fi
+          else
+            python3 scripts/add_watermark.py doc/paper.pdf doc/paper_preprint.pdf
+            python3 scripts/add_watermark.py doc/presentation.pdf doc/presentation_preprint.pdf
+            echo "✅ Watermarked PDFs created"
+          fi
+          
+          # Ensure docs/doc/ exists and has PDFs
           mkdir -p docs/doc
-          cp doc/paper_preprint.pdf docs/doc/ 2>/dev/null || true
-          cp doc/presentation_preprint.pdf docs/doc/ 2>/dev/null || true
-          echo "✅ PDFs also copied to docs/doc/"
+          if [ -f doc/paper_preprint.pdf ]; then
+            cp doc/paper_preprint.pdf docs/doc/
+            echo "✅ Copied paper_preprint.pdf to docs/doc/"
+          elif [ -f docs/doc/paper_preprint.pdf ]; then
+            echo "✅ Paper PDF already in docs/doc/"
+          fi
+          
+          if [ -f doc/presentation_preprint.pdf ]; then
+            cp doc/presentation_preprint.pdf docs/doc/
+            echo "✅ Copied presentation_preprint.pdf to docs/doc/"
+          elif [ -f docs/doc/presentation_preprint.pdf ]; then
+            echo "✅ Presentation PDF already in docs/doc/"
+          fi
+          
           # Verify PDFs exist
-          ls -lh doc/*preprint.pdf
-          ls -lh docs/doc/*preprint.pdf || echo "PDFs in docs/doc/ will be available after copy"
+          echo ""
+          echo "PDF verification:"
+          ls -lh doc/*preprint.pdf 2>/dev/null || echo "No PDFs in doc/"
+          ls -lh docs/doc/*preprint.pdf 2>/dev/null || echo "No PDFs in docs/doc/"
 
       - name: Setup Git
         run: |
