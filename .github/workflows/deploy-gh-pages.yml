@@ -37,11 +37,16 @@ jobs:
 
       - name: Deploy to gh-pages
         run: |
+          git fetch origin gh-pages:gh-pages || true
           git checkout gh-pages || git checkout -b gh-pages
-          git rm -rf . || true
+          git rm -rf . --ignore-unmatch || true
           cp -r docs/* .
-          cp docs/.nojekyll . 2>/dev/null || touch .nojekyll
+          [ -f docs/.nojekyll ] && cp docs/.nojekyll . || touch .nojekyll
           git add -A
-          git commit -m "Deploy website from main branch [skip ci]" || exit 0
-          git push origin gh-pages --force
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Deploy website from main branch [skip ci]"
+            git push origin gh-pages --force
+          fi
 
