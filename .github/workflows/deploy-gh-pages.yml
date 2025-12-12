@@ -30,6 +30,17 @@ jobs:
           fi
           echo "✅ HTML is valid"
 
+      - name: Setup Python for watermarking
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install PyPDF2 reportlab
+
+      - name: Add Preprint watermark to PDFs
+        run: |
+          python3 scripts/add_watermark.py doc/paper.pdf doc/paper_preprint.pdf
+          python3 scripts/add_watermark.py doc/presentation.pdf doc/presentation_preprint.pdf
+          echo "✅ Watermarked PDFs created"
+
       - name: Setup Git
         run: |
           git config user.name "GitHub Actions"
@@ -42,9 +53,9 @@ jobs:
           git rm -rf . --ignore-unmatch || true
           cp -r docs/* .
           [ -f docs/.nojekyll ] && cp docs/.nojekyll . || touch .nojekyll
-          # Copy PDFs from doc/ to docs/doc/ for deployment
+          # Copy watermarked PDFs from doc/ to docs/doc/ for deployment
           mkdir -p doc
-          cp ../doc/*.pdf doc/ 2>/dev/null || echo "PDFs will be copied from main branch"
+          cp doc/*preprint.pdf doc/ 2>/dev/null || echo "Preprint PDFs will be available after watermarking step"
           git add -A
           if git diff --staged --quiet; then
             echo "No changes to commit"
