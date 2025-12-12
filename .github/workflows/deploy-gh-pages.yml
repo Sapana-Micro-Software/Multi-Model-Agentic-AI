@@ -53,14 +53,22 @@ jobs:
           git rm -rf . --ignore-unmatch || true
           cp -r docs/* .
           [ -f docs/.nojekyll ] && cp docs/.nojekyll . || touch .nojekyll
-          # Copy watermarked PDFs from doc/ to docs/doc/ for deployment
+          # Copy watermarked PDFs from source to doc/ folder
           mkdir -p doc
-          cp doc/*preprint.pdf doc/ 2>/dev/null || echo "Preprint PDFs will be available after watermarking step"
+          if [ -f ../doc/paper_preprint.pdf ]; then
+            cp ../doc/paper_preprint.pdf doc/paper_preprint.pdf
+          fi
+          if [ -f ../doc/presentation_preprint.pdf ]; then
+            cp ../doc/presentation_preprint.pdf doc/presentation_preprint.pdf
+          fi
+          # Verify PDFs are present
+          echo "PDFs in doc/ folder:"
+          ls -lh doc/*.pdf || echo "No PDFs found"
           git add -A
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Deploy website from main branch [skip ci]"
+            git commit -m "Deploy website with watermarked PDFs [skip ci]"
             git push origin gh-pages --force
           fi
 
