@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025, Shyamal Chandra
+ * Copyright (C) 2025, Shyamal Suhana Chandra
  * No MIT License
  * 
  * Comprehensive test suite: Unit, Integration, Regression, Blackbox, A-B, UX tests
@@ -359,7 +359,7 @@ private:
 
 int main() {
     std::cout << "=== Comprehensive Test Suite ===" << std::endl;
-    std::cout << "Copyright (C) 2025, Shyamal Chandra" << std::endl;
+    std::cout << "Copyright (C) 2025, Shyamal Suhana Chandra" << std::endl;
     std::cout << "No MIT License\n" << std::endl;
     
     createUnitTests();

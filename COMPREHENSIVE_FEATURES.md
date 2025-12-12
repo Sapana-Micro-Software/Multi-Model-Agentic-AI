@@ -1,6 +1,6 @@
 # Comprehensive Features Implementation
 
-Copyright (C) 2025, Shyamal Chandra  
+Copyright (C) 2025, Shyamal Suhana Chandra  
 No MIT License
 
 ## All Implemented Characteristics

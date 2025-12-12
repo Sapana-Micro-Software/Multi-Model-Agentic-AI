@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025, Shyamal Chandra
+ * Copyright (C) 2025, Shyamal Suhana Chandra
  * No MIT License
  * 
  * Security layer for input validation, sanitization, and encryption

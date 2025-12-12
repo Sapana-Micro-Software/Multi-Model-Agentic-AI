@@ -1,6 +1,6 @@
 # Multi-Model Agentic AI
 
-Copyright (C) 2025, Shyamal Chandra  
+Copyright (C) 2025, Shyamal Suhana Chandra  
 No MIT License
 
 A comprehensive, production-ready C++ multi-agent system where each agent uses llm.c for LLM inference, maintains working memory with MDL-normalized context, ruminates on tasks using chain-of-thought reasoning, and can communicate via direct messaging.
