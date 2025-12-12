@@ -132,8 +132,8 @@
 \end{frame}
 
 \begin{frame}{Input Validation with Retry}
-\begin{algorithm}[H]
-\caption{Recursive Validation Algorithm}
+\textbf{Recursive Validation Algorithm}
+\vspace{0.3cm}
 \begin{algorithmic}
 \Require Input string $s$, validator $v$, sanitizer $san$, max retries $max$
 \Ensure Validated and sanitized string or empty string
@@ -148,7 +148,6 @@
     \State \Return \Call{ValidateRecursive}{$s_{san}$, $v$, $san$, $attempt + 1$}
 \EndFunction
 \end{algorithmic}
-\end{algorithm}
 \end{frame}
 
 \section{Fault Tolerance}
@@ -399,8 +398,8 @@ Lightweight & \checkmark & $\times$ & \checkmark \\
 \legend{Throughput, Latency (ms)}
 \end{axis}
 \end{tikzpicture}
-\caption{Scalability: Linear scaling up to 100 agents}
 \end{center}
+\textbf{Scalability:} Linear scaling up to 100 agents
 \end{frame}
 
 \section{Performance}
