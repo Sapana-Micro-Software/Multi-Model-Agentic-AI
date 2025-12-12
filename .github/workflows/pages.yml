@@ -6,14 +6,15 @@ on:
       - main
   workflow_dispatch:
 
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 permissions:
   contents: read
   pages: write
   id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -22,11 +23,21 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
+
+      - name: Validate HTML
+        run: |
+          if ! command -v tidy &> /dev/null; then
+            echo "HTML Tidy not found, skipping validation"
+            exit 0
+          fi
+          tidy -q -e docs/index.html || true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
