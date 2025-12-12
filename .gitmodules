@@ -1,0 +1,4 @@
+[submodule "third_party/llm.c"]
+	path = third_party/llm.c
+	url = https://github.com/karpathy/llm.c.git
+

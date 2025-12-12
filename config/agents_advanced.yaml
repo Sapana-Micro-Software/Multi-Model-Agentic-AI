@@ -1,0 +1,22 @@
+# Advanced agent configuration example
+agents:
+  - id: research_agent
+    model_path: "models/research_model.bin"
+    trace_limit: 30
+    memory_size: 8192
+    
+  - id: analysis_agent
+    model_path: "models/analysis_model.bin"
+    trace_limit: 25
+    memory_size: 6144
+    
+  - id: synthesis_agent
+    model_path: "models/synthesis_model.bin"
+    trace_limit: 20
+    memory_size: 4096
+
+# Default task (optional)
+default_task:
+  keyword: "research and analyze topic"
+  agent_id: "research_agent"
+

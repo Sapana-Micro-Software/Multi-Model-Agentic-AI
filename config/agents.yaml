@@ -1,0 +1,10 @@
+agents:
+  - id: agent1
+    model_path: "models/model1.bin"
+    trace_limit: 20
+    memory_size: 4096
+  - id: agent2
+    model_path: "models/model2.bin"
+    trace_limit: 15
+    memory_size: 2048
+

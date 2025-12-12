@@ -1,0 +1,27 @@
+{
+  "agents": [
+    {
+      "id": "agent1",
+      "model_path": "models/model1.bin",
+      "trace_limit": 20,
+      "memory_size": 4096
+    },
+    {
+      "id": "agent2",
+      "model_path": "models/model2.bin",
+      "trace_limit": 15,
+      "memory_size": 2048
+    },
+    {
+      "id": "agent3",
+      "model_path": "models/model3.bin",
+      "trace_limit": 25,
+      "memory_size": 8192
+    }
+  ],
+  "default_task": {
+    "keyword": "analyze system performance",
+    "agent_id": "agent1"
+  }
+}
+

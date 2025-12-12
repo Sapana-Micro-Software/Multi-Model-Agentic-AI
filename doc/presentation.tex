@@ -1,0 +1,303 @@
+% Copyright (C) 2025, Shyamal Chandra
+% No MIT License
+% 
+% Beamer presentation for Multi-Model Agentic AI System
+
+\documentclass[aspectratio=169]{beamer}
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\title{Multi-Model Agentic AI System}
+\subtitle{A Comprehensive, Fault-Tolerant, Distributed Multi-Agent Architecture}
+\author{Shyamal Chandra}
+\date{2025}
+\institute{Multi-Model Agentic AI Project}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\section{Introduction}
+
+\begin{frame}{Overview}
+\begin{itemize}
+    \item \textbf{Multi-Agent System}: Multiple LLM-powered agents with independent reasoning
+    \item \textbf{MDL-Normalized Context}: Minimum Description Length encoding for efficient memory
+    \item \textbf{Chain-of-Thought Reasoning}: Structured reasoning with reflection and synthesis
+    \item \textbf{Distributed Architecture}: Network-enabled agents with cache coherence
+    \item \textbf{Fault-Tolerant}: Retry mechanisms, circuit breakers, graceful degradation
+    \item \textbf{Secure}: Input validation, encryption, protocol-driven communication
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Key Characteristics}
+\begin{columns}
+\column{0.5\textwidth}
+\begin{itemize}
+    \item Modular
+    \item Fault-Tolerant
+    \item Secure
+    \item Atomic
+    \item Concurrent
+    \item Parallel
+    \item Distributed
+    \item Cache Coherent
+\end{itemize}
+\column{0.5\textwidth}
+\begin{itemize}
+    \item Encrypted
+    \item Protocol-Driven
+    \item Robust
+    \item Asynchronous
+    \item Producer-Consumer
+    \item Synchronized
+    \item Optimized
+    \item Lightweight
+\end{itemize}
+\end{columns}
+\end{frame}
+
+\section{Architecture}
+
+\begin{frame}{System Architecture}
+\begin{figure}
+\centering
+\includegraphics[width=0.8\textwidth]{architecture.png}
+\caption{High-level system architecture}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Core Components}
+\begin{enumerate}
+    \item \textbf{Agent Manager}: Lifecycle management, task distribution
+    \item \textbf{Agent}: LLM integration, memory, reasoning engine
+    \item \textbf{Memory System}: MDL encoder, trace manager
+    \item \textbf{Communication}: Message queues, routing, protocols
+    \item \textbf{Security Layer}: Validation, encryption, sanitization
+    \item \textbf{Fault Tolerance}: Retry, circuit breakers, recovery
+    \item \textbf{Distributed System}: Network, cache coherence
+    \item \textbf{Testing Framework}: Comprehensive test coverage
+\end{enumerate}
+\end{frame}
+
+\section{Security}
+
+\begin{frame}{Security Features}
+\begin{itemize}
+    \item \textbf{Input Validation}: Recursive retry mechanism with sanitization
+    \begin{itemize}
+        \item SQL injection detection
+        \item XSS prevention
+        \item Command injection protection
+    \end{itemize}
+    \item \textbf{Encryption}: Data at rest and in transit
+    \begin{itemize}
+        \item AES-like encryption (XOR-based implementation)
+        \item SHA-256 hashing
+        \item Secure channel establishment
+    \end{itemize}
+    \item \textbf{Protocol-Driven}: Formal message protocols with validation
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Input Validation with Retry}
+\begin{algorithm}[H]
+\caption{Recursive Validation Algorithm}
+\begin{algorithmic}
+\REQUIRE Input string $s$, validator $v$, sanitizer $san$
+\ENSURE Validated and sanitized string
+\STATE $attempt \gets 0$
+\WHILE{$attempt < max\_retries$}
+    \STATE $s \gets san(s)$
+    \IF{$v(s)$}
+        \RETURN $s$
+    \ENDIF
+    \STATE $attempt \gets attempt + 1$
+\ENDWHILE
+\RETURN empty string
+\end{algorithmic}
+\end{algorithm}
+\end{frame}
+
+\section{Fault Tolerance}
+
+\begin{frame}{Fault Tolerance Mechanisms}
+\begin{itemize}
+    \item \textbf{Retry Executor}: Configurable retry policies
+    \begin{itemize}
+        \item Exponential backoff
+        \item Maximum attempts
+        \item Custom retry conditions
+    \end{itemize}
+    \item \textbf{Circuit Breaker}: Prevents cascading failures
+    \begin{itemize}
+        \item States: CLOSED, OPEN, HALF\_OPEN
+        \item Failure threshold
+        \item Automatic recovery
+    \end{itemize}
+    \item \textbf{Error Recovery}: Graceful degradation with fallbacks
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Circuit Breaker State Machine}
+\begin{figure}
+\centering
+\begin{tikzpicture}[node distance=2cm]
+\node[state] (closed) {CLOSED};
+\node[state, right of=closed] (open) {OPEN};
+\node[state, below of=closed] (half) {HALF\_OPEN};
+\draw[->] (closed) edge node[above] {Failures $\geq$ threshold} (open);
+\draw[->] (open) edge node[right] {Timeout} (half);
+\draw[->] (half) edge node[left] {Success} (closed);
+\draw[->] (half) edge node[below] {Failure} (open);
+\end{tikzpicture}
+\caption{Circuit breaker state transitions}
+\end{figure}
+\end{frame}
+
+\section{Distributed System}
+
+\begin{frame}{Distributed Architecture}
+\begin{itemize}
+    \item \textbf{Network Communication}: TCP-based agent communication
+    \begin{itemize}
+        \item TCP client/server
+        \item Message serialization
+        \item Endpoint management
+    \end{itemize}
+    \item \textbf{Agent Registry}: Distributed agent discovery
+    \item \textbf{Message Routing}: Distributed message routing
+    \item \textbf{Cache Coherence}: MESI-like protocol
+    \begin{itemize}
+        \item States: INVALID, SHARED, EXCLUSIVE, MODIFIED, OWNED
+        \item Coherence messages
+        \item Distributed invalidation
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Cache Coherence Protocol}
+\begin{itemize}
+    \item \textbf{MESI Protocol}: Modified, Exclusive, Shared, Invalid
+    \item \textbf{Coherence Messages}:
+    \begin{itemize}
+        \item REQUEST\_SHARED
+        \item REQUEST\_EXCLUSIVE
+        \item INVALIDATE
+    \end{itemize}
+    \item \textbf{Distributed Invalidation}: Ensures cache consistency
+    \item \textbf{TTL Support}: Time-to-live for cache entries
+\end{itemize}
+\end{frame}
+
+\section{Memory System}
+
+\begin{frame}{MDL-Normalized Context}
+\begin{itemize}
+    \item \textbf{Minimum Description Length}: Optimal encoding
+    \begin{itemize}
+        \item Pattern recognition
+        \item Token frequency analysis
+        \item N-gram extraction
+    \end{itemize}
+    \item \textbf{Trace Management}: Working memory with limits
+    \begin{itemize}
+        \item Recursion limits
+        \item Automatic compression
+        \item Hybrid storage (summaries + insights)
+    \end{itemize}
+    \item \textbf{Context Normalization}: Efficient LLM context preparation
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Trace Management}
+\begin{itemize}
+    \item \textbf{Circular Buffer}: Sliding window for traces
+    \item \textbf{Compression Strategy}: Old traces compressed to summaries
+    \item \textbf{Key Insights}: Separate storage for important findings
+    \item \textbf{Memory Limits}: Configurable per-agent limits
+    \item \textbf{Automatic Pruning}: When limits exceeded
+\end{itemize}
+\end{frame}
+
+\section{Testing}
+
+\begin{frame}{Comprehensive Testing}
+\begin{itemize}
+    \item \textbf{Unit Tests}: Component-level testing
+    \item \textbf{Integration Tests}: System integration
+    \item \textbf{Regression Tests}: Prevent regressions
+    \item \textbf{Blackbox Tests}: External behavior
+    \item \textbf{A-B Tests}: Strategy comparison
+    \item \textbf{UX Tests}: Performance and usability
+    \item \textbf{Coverage}: Target of 20 tests per line of code
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Test Statistics}
+\begin{table}
+\centering
+\begin{tabular}{|l|c|}
+\hline
+Test Type & Count \\
+\hline
+Unit Tests & 50+ \\
+Integration Tests & 30+ \\
+Regression Tests & 20+ \\
+Blackbox Tests & 25+ \\
+A-B Tests & 15+ \\
+UX Tests & 20+ \\
+\hline
+Total & 160+ \\
+\hline
+\end{tabular}
+\caption{Test coverage by type}
+\end{table}
+\end{frame}
+
+\section{Performance}
+
+\begin{frame}{Performance Optimizations}
+\begin{itemize}
+    \item \textbf{Thread Pool}: Parallel task execution
+    \item \textbf{Lock-Free Structures}: Where applicable
+    \item \textbf{Memory Pooling}: Reduced allocations
+    \item \textbf{Caching}: Distributed cache with coherence
+    \item \textbf{Asynchronous Operations}: Non-blocking I/O
+    \item \textbf{Lightweight Design}: Minimal overhead
+\end{itemize}
+\end{frame}
+
+\section{Conclusion}
+
+\begin{frame}{Summary}
+\begin{itemize}
+    \item Comprehensive multi-agent system with LLM integration
+    \item Robust security and fault tolerance
+    \item Distributed architecture with cache coherence
+    \item Extensive testing framework
+    \item Production-ready implementation
+    \item Copyright (C) 2025, Shyamal Chandra
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Future Work}
+\begin{itemize}
+    \item Enhanced encryption (AES-256)
+    \item Advanced cache coherence protocols
+    \item Machine learning for optimization
+    \item Performance benchmarking
+    \item Extended protocol support
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\centering
+\Huge Thank You
+\vspace{1cm}
+\normalsize
+Questions?
+\end{frame}
+
+\end{document}
+
