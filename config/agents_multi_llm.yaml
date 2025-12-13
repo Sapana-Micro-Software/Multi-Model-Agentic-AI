@@ -1,0 +1,78 @@
+# Multi-LLM Agent Configuration
+# This configuration demonstrates how to instantiate different LLM models
+# for different agents to explore diverse behaviors and "hallucinations"
+
+# Each agent can use a different Ollama model
+# The system automatically detects Ollama models if they don't look like file paths
+
+agents:
+  # Small, fast model - good for quick responses
+  - id: tinyllama_agent
+    model_path: "tinyllama"  # or "ollama:tinyllama"
+    trace_limit: 20
+    memory_size: 2048
+    description: "Fast, lightweight model for quick tasks"
+    
+  # Medium-sized model - balanced performance
+  - id: llama32_agent
+    model_path: "llama3.2:3b"  # Ollama model with tag
+    trace_limit: 25
+    memory_size: 4096
+    description: "Llama 3.2 3B - balanced performance and quality"
+    
+  # Google's Gemma model
+  - id: gemma_agent
+    model_path: "gemma"  # or "gemma:2b" or "gemma:7b"
+    trace_limit: 30
+    memory_size: 6144
+    description: "Google Gemma model - good for general tasks"
+    
+  # Mistral model - strong reasoning
+  - id: mistral_agent
+    model_path: "mistral"  # or "mistral:7b"
+    trace_limit: 35
+    memory_size: 8192
+    description: "Mistral model - strong reasoning capabilities"
+    
+  # Llama 2 - classic model
+  - id: llama2_agent
+    model_path: "llama2"  # or "llama2:7b" or "llama2:13b"
+    trace_limit: 30
+    memory_size: 6144
+    description: "Llama 2 - well-tested model"
+    
+  # Code-focused model
+  - id: codellama_agent
+    model_path: "codellama"  # or "codellama:7b"
+    trace_limit: 25
+    memory_size: 4096
+    description: "Code Llama - specialized for code tasks"
+    
+  # Neural Chat model
+  - id: neuralchat_agent
+    model_path: "neural-chat"  # or "neural-chat:7b"
+    trace_limit: 30
+    memory_size: 6144
+    description: "Neural Chat - conversational model"
+    
+  # You can also mix file-based models (if you have them)
+  # - id: local_model_agent
+  #   model_path: "models/local_model.bin"
+  #   trace_limit: 20
+  #   memory_size: 4096
+
+# Default task (optional)
+default_task:
+  keyword: "analyze and compare different perspectives"
+  agent_id: "gemma_agent"
+
+# Example: Use different agents for different task types
+# You can assign tasks to specific agents based on their model characteristics:
+# - tinyllama_agent: Fast responses, may have more hallucinations
+# - llama32_agent: Balanced, good general performance
+# - gemma_agent: Google's model, good for factual tasks
+# - mistral_agent: Strong reasoning, fewer hallucinations
+# - llama2_agent: Classic, well-tested
+# - codellama_agent: Best for code-related tasks
+# - neuralchat_agent: Best for conversational tasks
+

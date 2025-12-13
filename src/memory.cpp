@@ -18,7 +18,7 @@ MDLEncoder::MDLEncoder() {
     token_frequencies_["and"] = 500;
 }
 
-std::vector<std::string> MDLEncoder::tokenize(const std::string& context) {
+std::vector<std::string> MDLEncoder::tokenize(const std::string& context) const {
     std::vector<std::string> tokens;
     std::regex word_regex(R"(\b\w+\b)");
     std::sregex_iterator iter(context.begin(), context.end(), word_regex);
@@ -33,14 +33,14 @@ std::vector<std::string> MDLEncoder::tokenize(const std::string& context) {
     return tokens;
 }
 
-void MDLEncoder::updateTokenFrequencies(const std::string& context) {
+void MDLEncoder::updateTokenFrequencies(const std::string& context) const {
     auto tokens = tokenize(context);
     for (const auto& token : tokens) {
         token_frequencies_[token]++;
     }
 }
 
-std::vector<std::pair<std::string, size_t>> MDLEncoder::extractPatterns(const std::string& context) {
+std::vector<std::pair<std::string, size_t>> MDLEncoder::extractPatterns(const std::string& context) const {
     std::vector<std::pair<std::string, size_t>> patterns;
     
     // Extract n-grams (2-grams to 5-grams)
@@ -81,7 +81,7 @@ std::vector<std::pair<std::string, size_t>> MDLEncoder::extractPatterns(const st
 }
 
 std::string MDLEncoder::replacePatterns(const std::string& context,
-                                       const std::vector<std::pair<std::string, size_t>>& patterns) {
+                                       const std::vector<std::pair<std::string, size_t>>& patterns) const {
     std::string result = context;
     
     // Create pattern codes (short identifiers)
@@ -113,7 +113,7 @@ std::string MDLEncoder::replacePatterns(const std::string& context,
     return result;
 }
 
-std::string MDLEncoder::compress(const std::string& context) {
+std::string MDLEncoder::compress(const std::string& context) const {
     if (context.empty()) return context;
     
     updateTokenFrequencies(context);
@@ -121,7 +121,7 @@ std::string MDLEncoder::compress(const std::string& context) {
     return replacePatterns(context, patterns);
 }
 
-std::string MDLEncoder::encode(const std::string& context) {
+std::string MDLEncoder::encode(const std::string& context) const {
     // MDL encoding: compress and normalize
     std::string compressed = compress(context);
     
@@ -136,13 +136,13 @@ std::string MDLEncoder::encode(const std::string& context) {
     return compressed;
 }
 
-std::string MDLEncoder::decode(const std::string& encoded) {
+std::string MDLEncoder::decode(const std::string& encoded) const {
     // For now, decoding is mostly reversing whitespace normalization
     // Pattern replacement would need a reverse mapping
     return encoded;
 }
 
-size_t MDLEncoder::calculateDescriptionLength(const std::string& context) {
+size_t MDLEncoder::calculateDescriptionLength(const std::string& context) const {
     // Approximate description length using entropy
     if (context.empty()) return 0;
     
@@ -207,7 +207,7 @@ std::vector<std::string> TraceManager::getKeyInsights() const {
 }
 
 std::vector<std::string> TraceManager::getSummaries() const {
-    std::vector<std::string> summaries = compressed_summaries_;
+    std::vector<std::string> summaries(compressed_summaries_.begin(), compressed_summaries_.end());
     
     // Also include summaries from current traces if they exist
     for (const auto& trace : traces_) {

@@ -13,6 +13,7 @@
 #include <functional>
 #include <mutex>
 #include <unordered_set>
+#include <map>
 
 namespace security {
 

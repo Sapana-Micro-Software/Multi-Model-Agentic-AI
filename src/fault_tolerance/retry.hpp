@@ -14,6 +14,7 @@
 #include <atomic>
 #include <vector>
 #include <memory>
+#include <map>
 
 namespace fault_tolerance {
 

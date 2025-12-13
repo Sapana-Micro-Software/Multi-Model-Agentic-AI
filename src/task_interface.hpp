@@ -53,6 +53,11 @@ public:
     bool isHelpRequested() const { return help_requested_; }
     
     /**
+     * Check if verbose mode is enabled
+     */
+    bool isVerbose() const { return verbose_; }
+    
+    /**
      * Print usage information
      */
     void printUsage() const;
@@ -63,6 +68,7 @@ private:
     Task task_;
     std::string config_path_;
     bool help_requested_;
+    bool verbose_;
     
     /**
      * Parse argument

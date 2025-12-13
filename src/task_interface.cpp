@@ -4,6 +4,7 @@
 #include <sstream>
 #include <algorithm>
 #include <regex>
+#include <vector>
 
 namespace task_interface {
 
@@ -13,6 +14,7 @@ CLIParser::CLIParser(int argc, char* argv[])
     : argc_(argc)
     , argv_(argv)
     , help_requested_(false)
+    , verbose_(false)
 {
 }
 
@@ -27,6 +29,11 @@ bool CLIParser::parse() {
         if (arg == "--help" || arg == "-h") {
             help_requested_ = true;
             return true;
+        }
+        
+        if (arg == "--verbose" || arg == "-v") {
+            verbose_ = true;
+            continue;
         }
         
         if (arg == "--task" || arg == "-t") {
@@ -75,36 +82,59 @@ void CLIParser::printUsage() const {
     std::cout << "  -t, --task KEYWORD       Task keyword to process\n";
     std::cout << "  -a, --agent AGENT_ID     Agent ID to assign task to\n";
     std::cout << "  -c, --config FILE        Configuration file path\n";
+    std::cout << "  -v, --verbose            Show detailed internal state\n";
     std::cout << "  -h, --help              Show this help message\n";
     std::cout << "\n";
     std::cout << "Examples:\n";
     std::cout << "  ./multi_agent_llm --task \"research topic\" --agent agent1\n";
     std::cout << "  ./multi_agent_llm --config config/agents.yaml --task \"analyze data\"\n";
+    std::cout << "  ./multi_agent_llm --task \"research zumba\" --verbose\n";
 }
 
 // ConfigParser Implementation
 
 bool ConfigParser::loadConfig(const std::string& file_path) {
-    std::ifstream file(file_path);
-    if (!file.is_open()) {
+    // Try multiple path variations
+    std::vector<std::string> paths_to_try;
+    
+    // If path starts with ../, use as-is and also try without
+    if (file_path.find("../") == 0) {
+        paths_to_try.push_back(file_path);
+        paths_to_try.push_back(file_path.substr(3)); // Remove ../
+    } else {
+        paths_to_try.push_back(file_path);
+        paths_to_try.push_back("../" + file_path);
+        paths_to_try.push_back("../../" + file_path);
+    }
+    
+    std::ifstream file;
+    std::string actual_path;
+    
+    for (const auto& path : paths_to_try) {
+        file.open(path);
+        if (file.is_open()) {
+            actual_path = path;
+            file.close();
+            break;
+        }
+        file.close();
+    }
+    
+    if (actual_path.empty()) {
         return false;
     }
     
-    std::string content((std::istreambuf_iterator<char>(file)),
-                        std::istreambuf_iterator<char>());
-    file.close();
-    
     // Determine file type by extension
-    std::string ext = file_path.substr(file_path.find_last_of('.'));
+    std::string ext = actual_path.substr(actual_path.find_last_of('.'));
     std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
     
     if (ext == ".yaml" || ext == ".yml") {
-        return parseYAML(file_path);
+        return parseYAML(actual_path);
     } else if (ext == ".json") {
-        return parseJSON(file_path);
+        return parseJSON(actual_path);
     } else {
         // Try to parse as YAML by default
-        return parseYAML(file_path);
+        return parseYAML(actual_path);
     }
 }
 
@@ -131,8 +161,15 @@ bool ConfigParser::parseSimpleYAML(const std::string& file_path) {
         }
         
         // Trim whitespace
-        line.erase(0, line.find_first_not_of(" \t"));
-        line.erase(line.find_last_not_of(" \t") + 1);
+        size_t first_non_ws = line.find_first_not_of(" \t");
+        if (first_non_ws == std::string::npos) {
+            continue; // Empty line
+        }
+        line = line.substr(first_non_ws);
+        size_t last_non_ws = line.find_last_not_of(" \t");
+        if (last_non_ws != std::string::npos) {
+            line = line.substr(0, last_non_ws + 1);
+        }
         
         if (line.empty()) continue;
         
@@ -143,37 +180,65 @@ bool ConfigParser::parseSimpleYAML(const std::string& file_path) {
         }
         
         if (in_agents) {
-            // Check for agent entry
-            if (line == "-" || line.find("- ") == 0) {
+            // Check for agent entry (YAML list item with dash)
+            if (line.find("-") == 0) {
+                // Save previous agent if exists
                 if (in_agent && !current_config.id.empty()) {
                     agent_configs_.push_back(current_config);
-                    current_config = agent::AgentConfig();
                 }
+                // Start new agent
+                current_config = agent::AgentConfig();
                 in_agent = true;
-                continue;
+                // Remove the dash and continue to parse the first field if on same line
+                line = line.substr(1);
+                size_t first_char = line.find_first_not_of(" \t");
+                if (first_char != std::string::npos) {
+                    line = line.substr(first_char);
+                } else {
+                    continue; // Dash on its own line, next line will have fields
+                }
             }
             
             if (in_agent) {
-                // Parse key-value pairs
+                // Parse key-value pairs (handle indented fields)
                 size_t colon_pos = line.find(':');
                 if (colon_pos != std::string::npos) {
                     std::string key = line.substr(0, colon_pos);
                     std::string value = line.substr(colon_pos + 1);
                     
                     // Trim
-                    key.erase(0, key.find_first_not_of(" \t"));
-                    key.erase(key.find_last_not_of(" \t") + 1);
-                    value.erase(0, value.find_first_not_of(" \t\""));
-                    value.erase(value.find_last_not_of(" \t\"") + 1);
+                    size_t key_start = key.find_first_not_of(" \t");
+                    size_t key_end = key.find_last_not_of(" \t");
+                    if (key_start != std::string::npos) {
+                        key = key.substr(key_start, key_end != std::string::npos ? key_end - key_start + 1 : std::string::npos);
+                    }
+                    
+                    size_t val_start = value.find_first_not_of(" \t\"");
+                    size_t val_end = value.find_last_not_of(" \t\"");
+                    if (val_start != std::string::npos) {
+                        value = value.substr(val_start, val_end != std::string::npos ? val_end - val_start + 1 : std::string::npos);
+                    }
                     
                     if (key == "id") {
                         current_config.id = value;
                     } else if (key == "model_path") {
+                        // Remove quotes if present
+                        if (!value.empty() && value.front() == '"' && value.back() == '"') {
+                            value = value.substr(1, value.length() - 2);
+                        }
                         current_config.model_path = value;
                     } else if (key == "trace_limit") {
-                        current_config.trace_limit = std::stoul(value);
+                        try {
+                            current_config.trace_limit = std::stoul(value);
+                        } catch (...) {
+                            current_config.trace_limit = 20; // default
+                        }
                     } else if (key == "memory_size") {
-                        current_config.memory_size = std::stoul(value);
+                        try {
+                            current_config.memory_size = std::stoul(value);
+                        } catch (...) {
+                            current_config.memory_size = 4096; // default
+                        }
                     }
                 }
             }
@@ -186,6 +251,13 @@ bool ConfigParser::parseSimpleYAML(const std::string& file_path) {
     }
     
     file.close();
+    
+    // Debug: Print parsed agents
+    // std::cerr << "DEBUG: Parsed " << agent_configs_.size() << " agents" << std::endl;
+    // for (const auto& cfg : agent_configs_) {
+    //     std::cerr << "  - " << cfg.id << " -> " << cfg.model_path << std::endl;
+    // }
+    
     return !agent_configs_.empty();
 }
 
@@ -202,7 +274,7 @@ bool ConfigParser::parseJSON(const std::string& file_path) {
     file.close();
     
     // Very basic JSON parsing for agents array
-    std::regex agent_regex(R"("id"\s*:\s*"([^"]+)"[^}]*"model_path"\s*:\s*"([^"]+)"[^}]*"trace_limit"\s*:\s*(\d+)[^}]*"memory_size"\s*:\s*(\d+))");
+    std::regex agent_regex(R"delim("id"\s*:\s*"([^"]+)"[^}]*"model_path"\s*:\s*"([^"]+)"[^}]*"trace_limit"\s*:\s*(\d+)[^}]*"memory_size"\s*:\s*(\d+))delim");
     std::sregex_iterator iter(content.begin(), content.end(), agent_regex);
     std::sregex_iterator end;
     

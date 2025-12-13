@@ -41,7 +41,7 @@ void ThreadPool::worker() {
 }
 
 size_t ThreadPool::getQueueSize() const {
-    std::lock_guard<std::mutex> lock(mutex_);
+    std::lock_guard<std::mutex> lock(const_cast<std::mutex&>(mutex_));
     return tasks_.size();
 }
 

@@ -38,41 +38,41 @@ public:
      * @param context Input context string
      * @return Encoded context with minimized description length
      */
-    std::string encode(const std::string& context);
+    std::string encode(const std::string& context) const;
     
     /**
      * Decode MDL-encoded context
      * @param encoded Encoded context
      * @return Decoded context
      */
-    std::string decode(const std::string& encoded);
+    std::string decode(const std::string& encoded) const;
     
     /**
      * Compress context by identifying patterns
      * @param context Input context
      * @return Compressed context
      */
-    std::string compress(const std::string& context);
+    std::string compress(const std::string& context) const;
     
     /**
      * Calculate description length of context
      * @param context Input context
      * @return Description length in bits (approximate)
      */
-    size_t calculateDescriptionLength(const std::string& context);
+    size_t calculateDescriptionLength(const std::string& context) const;
     
     /**
      * Update token frequencies for better encoding
      * @param context Context to analyze
      */
-    void updateTokenFrequencies(const std::string& context);
+    void updateTokenFrequencies(const std::string& context) const;
 
 private:
-    // Token frequency map for pattern recognition
-    std::map<std::string, size_t> token_frequencies_;
+    // Token frequency map for pattern recognition (mutable for caching in const methods)
+    mutable std::map<std::string, size_t> token_frequencies_;
     
-    // Common patterns cache
-    std::map<std::string, std::string> pattern_cache_;
+    // Common patterns cache (mutable for caching in const methods)
+    mutable std::map<std::string, std::string> pattern_cache_;
     
     // Minimum pattern length to consider
     static constexpr size_t MIN_PATTERN_LENGTH = 3;
@@ -81,18 +81,18 @@ private:
     /**
      * Extract common patterns from context
      */
-    std::vector<std::pair<std::string, size_t>> extractPatterns(const std::string& context);
+    std::vector<std::pair<std::string, size_t>> extractPatterns(const std::string& context) const;
     
     /**
      * Tokenize context into words/tokens
      */
-    std::vector<std::string> tokenize(const std::string& context);
+    std::vector<std::string> tokenize(const std::string& context) const;
     
     /**
      * Replace patterns with shorter codes
      */
     std::string replacePatterns(const std::string& context, 
-                               const std::vector<std::pair<std::string, size_t>>& patterns);
+                               const std::vector<std::pair<std::string, size_t>>& patterns) const;
 };
 
 /**
@@ -164,10 +164,10 @@ public:
 
 private:
     std::deque<TraceEntry> traces_;
-    std::vector<std::string> compressed_summaries_;
+    std::deque<std::string> compressed_summaries_;
     size_t trace_limit_;
     size_t memory_size_;
-    MDLEncoder encoder_;
+    mutable MDLEncoder encoder_;
     
     /**
      * Calculate current memory usage

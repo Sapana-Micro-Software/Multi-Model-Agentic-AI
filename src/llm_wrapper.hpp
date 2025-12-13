@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <functional>
+#include <future>
 
 // Forward declarations for llm.c types
 // These will be defined based on actual llm.c API
@@ -14,7 +15,16 @@ struct llm_context;
 namespace llm_wrapper {
 
 /**
- * LLM Wrapper class that provides C++ interface to llm.c
+ * LLM backend type
+ */
+enum class BackendType {
+    LLM_C,      // Local llm.c file-based model
+    OLLAMA,     // Ollama HTTP API
+    STUB        // Stub implementation for testing
+};
+
+/**
+ * LLM Wrapper class that provides C++ interface to llm.c and Ollama
  */
 class LLMWrapper {
 public:
@@ -26,11 +36,12 @@ public:
     LLMWrapper& operator=(const LLMWrapper&) = delete;
 
     /**
-     * Load a model from file
-     * @param model_path Path to the model file
+     * Load a model from file or Ollama
+     * @param model_path Path to the model file, or Ollama model name (e.g., "ollama:llama2" or "llama2")
+     * @param ollama_url Optional Ollama server URL (default: http://localhost:11434)
      * @return true if successful, false otherwise
      */
-    bool loadModel(const std::string& model_path);
+    bool loadModel(const std::string& model_path, const std::string& ollama_url = "http://localhost:11434");
 
     /**
      * Check if model is loaded
@@ -88,21 +99,71 @@ public:
      * Get model information
      */
     std::string getModelInfo() const;
+    
+    /**
+     * Get backend type
+     */
+    BackendType getBackendType() const { return backend_type_; }
 
 private:
     bool model_loaded_;
     size_t context_size_;
+    BackendType backend_type_;
     
     // llm.c model and context pointers
     // Using void* to avoid including llm.c headers directly
     // Actual implementation will cast to proper types
     void* model_ptr_;
     void* context_ptr_;
+    
+    // Ollama-specific
+    std::string ollama_model_name_;
+    std::string ollama_url_;
 
     /**
      * Initialize llm.c context
      */
     bool initializeContext();
+    
+    /**
+     * Check if model_path is an Ollama model
+     */
+    bool isOllamaModel(const std::string& model_path) const;
+    
+    /**
+     * Extract Ollama model name from path
+     */
+    std::string extractOllamaModelName(const std::string& model_path) const;
+    
+    /**
+     * Generate using Ollama API
+     */
+    std::string generateOllama(const std::string& prompt,
+                              int max_tokens,
+                              float temperature,
+                              int top_k,
+                              float top_p);
+    
+    /**
+     * Make HTTP POST request to Ollama
+     */
+    std::string httpPost(const std::string& url, const std::string& json_data) const;
+    
+    /**
+     * Check if Ollama server is reachable
+     */
+    bool checkOllamaConnection(const std::string& url) const;
+    
+    /**
+     * Check if a specific Ollama model is available/loaded (synchronous)
+     */
+    bool checkOllamaModelAvailable(const std::string& url, const std::string& model_name) const;
+    
+    /**
+     * Check if a specific Ollama model is available/loaded (asynchronous)
+     * @return Future that will contain true if model is available, false otherwise
+     */
+    std::future<bool> checkOllamaModelAvailableAsync(const std::string& url, const std::string& model_name) const;
 
     /**
      * Cleanup resources

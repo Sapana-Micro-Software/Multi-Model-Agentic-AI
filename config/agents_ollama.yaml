@@ -1,0 +1,30 @@
+# Ollama agent configuration example
+# Each agent can use a different Ollama model
+agents:
+  - id: research_agent
+    model_path: "llama2"  # Ollama model name
+    trace_limit: 30
+    memory_size: 8192
+    
+  - id: analysis_agent
+    model_path: "mistral"  # Different Ollama model
+    trace_limit: 25
+    memory_size: 6144
+    
+  - id: synthesis_agent
+    model_path: "codellama"  # Another Ollama model
+    trace_limit: 20
+    memory_size: 4096
+
+# Alternative: Use explicit ollama: prefix
+# agents:
+#   - id: research_agent
+#     model_path: "ollama:llama2"
+#     trace_limit: 30
+#     memory_size: 8192
+
+# Default task (optional)
+default_task:
+  keyword: "research and analyze topic"
+  agent_id: "research_agent"
+

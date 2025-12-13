@@ -185,7 +185,7 @@ void FileReporter::report(const std::string& message) {
         *shared_file_ << message << std::endl;
     } else if (!agent_files_.empty()) {
         // Write to first available file
-        agent_files_.begin()->second->get() << message << std::endl;
+        *agent_files_.begin()->second << message << std::endl;
     }
 }
 
